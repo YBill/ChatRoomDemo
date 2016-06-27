@@ -19,6 +19,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
     private Button createChatRoomBtn, enterChatRoomBtn, exitChatRoomBtn, roomListBtn, sendBtn;
     private TextView logText;
     private Button userListBtn;
+    private Button clearBtn;
     private ChatPresenter presenter;
 
     @Override
@@ -38,6 +39,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
         roomListBtn.setOnClickListener(this);
         sendBtn.setOnClickListener(this);
         userListBtn.setOnClickListener(this);
+        clearBtn.setOnClickListener(this);
     }
 
     private void initView() {
@@ -49,6 +51,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
         roomListBtn = (Button) findViewById(R.id.btn_get_room_list);
         sendBtn = (Button) findViewById(R.id.btn_send);
         userListBtn = (Button) findViewById(R.id.btn_room_list);
+        clearBtn = (Button) findViewById(R.id.btn_clear_log);
         logText = (TextView) findViewById(R.id.tv_log);
         logText.setMovementMethod(ScrollingMovementMethod.getInstance());
     }
@@ -87,13 +90,16 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
                 if(!TextUtils.isEmpty(roomId4))
                     presenter.getUserList(roomId4);
                 break;
+            case R.id.btn_clear_log:
+                logText.setText("");
+                break;
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.onDestory();
+//        presenter.onDestory();
     }
 
     @Override

@@ -16,11 +16,19 @@ import youyun.com.chatroomdemo.Util;
 public class ChatRequestBizImpl implements ChatRequestBiz{
 
     @Override
-    public void sendText(String roomId, String text) {
+    public void sendText(String roomId, String text, OnChatRequestListener listener) {
         try {
             String msgId = Util.genLocalMsgId();
-            WeimiInstance.getInstance().sendText(msgId, roomId, text, ConvType.room, null, 120);
+            boolean result = WeimiInstance.getInstance().sendText(msgId, roomId, text, ConvType.room, null, 120);
+            if(listener != null){
+                if(result)
+                    listener.onSuccess(text);
+                else
+                    listener.onFaild();
+            }
         } catch (WChatException e) {
+            if(listener != null)
+                listener.onFaild();
             e.printStackTrace();
         }
     }

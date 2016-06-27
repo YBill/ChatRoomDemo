@@ -41,7 +41,17 @@ public class ChatPresenter {
      * @param text
      */
     public void sendText(String roomId, String text){
-        chatRequestBiz.sendText(roomId, text);
+        chatRequestBiz.sendText(roomId, text, new OnChatRequestListener() {
+            @Override
+            public void onSuccess(String response) {
+                sendMessage(response);
+            }
+
+            @Override
+            public void onFaild() {
+
+            }
+        });
     }
 
     /**

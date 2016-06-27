@@ -37,7 +37,7 @@ public class ReceiveMsgRunnable implements Runnable {
             }
 
             NoticeType type = notice.getNoticeType();
-            Log.v("", "noticeType:" + type);
+            Log.v("Bill", "noticeType:" + type);
             switch (type) {
                 case textmessage:
                     textMessageMethod(notice);

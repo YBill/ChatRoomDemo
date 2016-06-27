@@ -9,8 +9,9 @@ public interface ChatRequestBiz {
      * 发送消息
      * @param roomId
      * @param text
+     * @param listener
      */
-    void sendText(String roomId, String text);
+    void sendText(String roomId, String text, OnChatRequestListener listener);
 
     /**
      * 创建聊天室
