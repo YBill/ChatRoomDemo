@@ -3,12 +3,20 @@ package youyun.com.chatroomdemo.chat;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.ioyouyun.wchat.message.HistoryMessage;
+import com.ioyouyun.wchat.message.NoticeType;
+import com.ioyouyun.wchat.message.TextMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import youyun.com.chatroomdemo.ReceiveMsgRunnable;
 import youyun.com.chatroomdemo.chat.biz.ChatRequestBiz;
@@ -40,18 +48,47 @@ public class ChatPresenter {
      * @param roomId
      * @param text
      */
-    public void sendText(String roomId, String text){
-        chatRequestBiz.sendText(roomId, text, new OnChatRequestListener() {
-            @Override
-            public void onSuccess(String response) {
-                sendMessage(response);
-            }
+    public void sendText(@NonNull String roomId, @NonNull String text){
+        Log.v("Bill", "text:" + text);
+        if(text.startsWith("@")){
+            String uid = text.substring(text.indexOf("@")+1, text.length());
+            Log.v("Bill", "uid:" + uid);
+            List list = new ArrayList();
+            list.add(uid);
+            chatRequestBiz.sendTextAtMsg(roomId, text, list, new OnChatRequestListener() {
+                @Override
+                public void onSuccess(String response) {
+                    sendMessage(response);
+                }
 
-            @Override
-            public void onFaild() {
+                @Override
+                public void onSuccess(List<HistoryMessage> list) {
 
-            }
-        });
+                }
+
+                @Override
+                public void onFaild() {
+
+                }
+            });
+        }else{
+            chatRequestBiz.sendText(roomId, text, new OnChatRequestListener() {
+                @Override
+                public void onSuccess(String response) {
+                    sendMessage(response);
+                }
+
+                @Override
+                public void onSuccess(List<HistoryMessage> list) {
+
+                }
+
+                @Override
+                public void onFaild() {
+
+                }
+            });
+        }
     }
 
     /**
@@ -65,6 +102,11 @@ public class ChatPresenter {
                 Log.v("Bill", "createRoom:" + response);
                 String roomId = resolveCreateJson(response);
                 sendMessage(roomId);
+            }
+
+            @Override
+            public void onSuccess(List<HistoryMessage> list) {
+
             }
 
             @Override
@@ -89,6 +131,11 @@ public class ChatPresenter {
             }
 
             @Override
+            public void onSuccess(List<HistoryMessage> list) {
+
+            }
+
+            @Override
             public void onFaild() {
 
             }
@@ -110,6 +157,11 @@ public class ChatPresenter {
             }
 
             @Override
+            public void onSuccess(List<HistoryMessage> list) {
+
+            }
+
+            @Override
             public void onFaild() {
 
             }
@@ -125,6 +177,11 @@ public class ChatPresenter {
             @Override
             public void onSuccess(String response) {
                 sendMessage(response);
+            }
+
+            @Override
+            public void onSuccess(List<HistoryMessage> list) {
+
             }
 
             @Override
@@ -154,6 +211,71 @@ public class ChatPresenter {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onSuccess(List<HistoryMessage> list) {
+
+            }
+
+            @Override
+            public void onFaild() {
+
+            }
+        });
+    }
+
+    /**
+     * 禁言
+     * @param uids
+     * @param status
+     * @param roomId
+     */
+    public void gagUsers(String uids, boolean status, String roomId){
+        chatRequestBiz.getGagUsers(uids, status, roomId, new OnChatRequestListener() {
+            @Override
+            public void onSuccess(String response) {
+                sendMessage(response);
+            }
+
+            @Override
+            public void onSuccess(List<HistoryMessage> list) {
+
+            }
+
+            @Override
+            public void onFaild() {
+
+            }
+        });
+    }
+
+    /**
+     * 获取历史记录
+     * @param toUid
+     * @param timestamp
+     * @param num
+     */
+    public void getHistory(String toUid, long timestamp, int num){
+        chatRequestBiz.getHistory(toUid, timestamp, num, new OnChatRequestListener() {
+            @Override
+            public void onSuccess(String response) {
+
+            }
+
+            @Override
+            public void onSuccess(List<HistoryMessage> list) {
+                if(list == null)
+                    return;
+                for (int i = 0; i < list.size(); i++) {
+                    HistoryMessage historyMessage = list.get(i);
+                    if(NoticeType.textmessage == historyMessage.type){
+                        if(historyMessage.message != null){
+                            TextMessage textMessage = (TextMessage) historyMessage.message;
+                            sendMessage("history:" + textMessage.text);
+                        }
+                    }
                 }
             }
 

@@ -1,5 +1,7 @@
 package youyun.com.chatroomdemo.chat.biz;
 
+import java.util.List;
+
 /**
  * Created by Bill on 2016/6/24.
  */
@@ -12,6 +14,15 @@ public interface ChatRequestBiz {
      * @param listener
      */
     void sendText(String roomId, String text, OnChatRequestListener listener);
+
+    /**
+     * @消息
+     * @param roomId
+     * @param text
+     * @param atIdList
+     * @param listener
+     */
+    void sendTextAtMsg(String roomId, String text, List<String> atIdList, OnChatRequestListener listener);
 
     /**
      * 创建聊天室
@@ -47,4 +58,22 @@ public interface ChatRequestBiz {
      * @param listener
      */
     void getRoomUserList(String roomId, OnChatRequestListener listener);
+
+    /**
+     * 禁言
+     * @param uids
+     * @param status
+     * @param roomId
+     * @param listener
+     */
+    void getGagUsers(String uids, boolean status, String roomId, OnChatRequestListener listener);
+
+    /**
+     * 历史记录
+     * @param toUid
+     * @param timestamp
+     * @param num
+     * @param listener
+     */
+    void getHistory(String toUid, long timestamp, int num, OnChatRequestListener listener);
 }

@@ -20,6 +20,9 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
     private TextView logText;
     private Button userListBtn;
     private Button clearBtn;
+    private Button noGagBtn;
+    private Button gagBtn;
+    private Button historyBtn;
     private ChatPresenter presenter;
 
     @Override
@@ -40,6 +43,9 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
         sendBtn.setOnClickListener(this);
         userListBtn.setOnClickListener(this);
         clearBtn.setOnClickListener(this);
+        gagBtn.setOnClickListener(this);
+        noGagBtn.setOnClickListener(this);
+        historyBtn.setOnClickListener(this);
     }
 
     private void initView() {
@@ -52,6 +58,9 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
         sendBtn = (Button) findViewById(R.id.btn_send);
         userListBtn = (Button) findViewById(R.id.btn_room_list);
         clearBtn = (Button) findViewById(R.id.btn_clear_log);
+        gagBtn = (Button) findViewById(R.id.btn_gag);
+        noGagBtn = (Button) findViewById(R.id.btn_no_gag);
+        historyBtn = (Button) findViewById(R.id.btn_history);
         logText = (TextView) findViewById(R.id.tv_log);
         logText.setMovementMethod(ScrollingMovementMethod.getInstance());
     }
@@ -92,6 +101,23 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
                 break;
             case R.id.btn_clear_log:
                 logText.setText("");
+                break;
+            case R.id.btn_gag:
+                String roomId5 = inputEdit.getText().toString();
+                String uids = sendEdit.getText().toString();
+                if(!TextUtils.isEmpty(roomId5) && !TextUtils.isEmpty(uids))
+                    presenter.gagUsers(uids, true, roomId5);
+                break;
+            case R.id.btn_no_gag:
+                String roomId6 = inputEdit.getText().toString();
+                String uids2 = sendEdit.getText().toString();
+                if(!TextUtils.isEmpty(roomId6) && !TextUtils.isEmpty(uids2))
+                    presenter.gagUsers(uids2, false, roomId6);
+                break;
+            case R.id.btn_history:
+                String uid = inputEdit.getText().toString();
+                if(!TextUtils.isEmpty(uid))
+                    presenter.getHistory(uid, System.currentTimeMillis()/1000, 10);
                 break;
         }
     }

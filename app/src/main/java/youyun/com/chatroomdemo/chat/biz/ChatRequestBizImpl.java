@@ -34,6 +34,24 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
     }
 
     @Override
+    public void sendTextAtMsg(String roomId, String text, List<String> atIdList, OnChatRequestListener listener) {
+        try {
+            String msgId = Util.genLocalMsgId();
+            boolean result = WeimiInstance.getInstance().sendTextExt(msgId, roomId, text, ConvType.room, atIdList, 120);
+            if(listener != null){
+                if(result)
+                    listener.onSuccess(text);
+                else
+                    listener.onFaild();
+            }
+        } catch (WChatException e) {
+            if(listener != null)
+                listener.onFaild();
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void createChatRoom(String name, final OnChatRequestListener listener) {
         WeimiInstance.getInstance().shortCreateRoom(name, "3", new HttpCallback() {
             @Override
@@ -143,6 +161,54 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
             @Override
             public void onResponseHistory(List<HistoryMessage> list) {
 
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if(listener != null){
+                    listener.onFaild();
+                }
+            }
+        }, 120);
+    }
+
+    @Override
+    public void getGagUsers(String uids, boolean status, String roomId, final OnChatRequestListener listener) {
+        WeimiInstance.getInstance().shortUsersGag(uids, status, roomId, new HttpCallback() {
+            @Override
+            public void onResponse(String result) {
+                if(listener != null){
+                    listener.onSuccess(result);
+                }
+            }
+
+            @Override
+            public void onResponseHistory(List<HistoryMessage> historyMessage) {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if(listener != null){
+                    listener.onFaild();
+                }
+            }
+        }, 120);
+    }
+
+    @Override
+    public void getHistory(String toUid, long timestamp, int num, final OnChatRequestListener listener) {
+        WeimiInstance.getInstance().shortGetHistoryByTime(toUid, timestamp, num, ConvType.room, new HttpCallback() {
+            @Override
+            public void onResponse(String result) {
+
+            }
+
+            @Override
+            public void onResponseHistory(List<HistoryMessage> historyMessage) {
+                if(listener != null){
+                    listener.onSuccess(historyMessage);
+                }
             }
 
             @Override
