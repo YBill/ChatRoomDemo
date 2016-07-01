@@ -121,7 +121,7 @@ public class ChatPresenter {
      * @param roomId
      */
     public void enterChatRoom(String roomId){
-        chatRequestBiz.enterChatRoom(roomId, new OnChatRequestListener() {
+        chatRequestBiz.enterChatRoom(roomId, roomId, new OnChatRequestListener() {
             @Override
             public void onSuccess(String response) {
                 Log.v("Bill", "enterChatRoom:" + response);
@@ -147,7 +147,7 @@ public class ChatPresenter {
      * @param roomId
      */
     public void exitChatRoom(String roomId){
-        chatRequestBiz.exitChatRoom(roomId, new OnChatRequestListener() {
+        chatRequestBiz.exitChatRoom(roomId, roomId, new OnChatRequestListener() {
             @Override
             public void onSuccess(String response) {
                 Log.v("Bill", "exitChatRoom:" + response);

@@ -34,16 +34,18 @@ public interface ChatRequestBiz {
     /**
      * 进入房间
      * @param roomId 房间Id
+     * @param thirdUid  第三方uid
      * @param listener
      */
-    void enterChatRoom(String roomId, OnChatRequestListener listener);
+    void enterChatRoom(String roomId, String thirdUid, OnChatRequestListener listener);
 
     /**
      * 退出房间
      * @param roomId 房间Id
+     * thirdUid  第三方uid
      * @param listener
      */
-    void exitChatRoom(String roomId, OnChatRequestListener listener);
+    void exitChatRoom(String roomId, String thirdUid, OnChatRequestListener listener);
 
     /**
      * 获取群列表

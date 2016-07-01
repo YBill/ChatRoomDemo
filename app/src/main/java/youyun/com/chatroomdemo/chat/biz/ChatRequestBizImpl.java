@@ -77,8 +77,8 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
     }
 
     @Override
-    public void enterChatRoom(String roomId, final OnChatRequestListener listener) {
-        WeimiInstance.getInstance().shortEnterRoom(roomId, new HttpCallback() {
+    public void enterChatRoom(String roomId, String thirdUid, final OnChatRequestListener listener) {
+        WeimiInstance.getInstance().shortEnterRoom(roomId, thirdUid, new HttpCallback() {
             @Override
             public void onResponse(String s) {
                 if(listener != null){
@@ -101,8 +101,8 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
     }
 
     @Override
-    public void exitChatRoom(String roomId, final OnChatRequestListener listener) {
-        WeimiInstance.getInstance().shortExitRoom(roomId, new HttpCallback() {
+    public void exitChatRoom(String roomId, String thirdUid, final OnChatRequestListener listener) {
+        WeimiInstance.getInstance().shortExitRoom(roomId, thirdUid, new HttpCallback() {
             @Override
             public void onResponse(String s) {
                 if(listener != null){
