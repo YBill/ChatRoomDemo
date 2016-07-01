@@ -22,7 +22,7 @@ public interface ChatRequestBiz {
      * @param atIdList
      * @param listener
      */
-    void sendTextAtMsg(String roomId, String text, List<String> atIdList, OnChatRequestListener listener);
+    void sendTextAtMsg(String roomId, String thirdUid, String text, List<String> atIdList, OnChatRequestListener listener);
 
     /**
      * 创建聊天室

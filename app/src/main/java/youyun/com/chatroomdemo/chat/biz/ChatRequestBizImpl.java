@@ -34,10 +34,10 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
     }
 
     @Override
-    public void sendTextAtMsg(String roomId, String text, List<String> atIdList, OnChatRequestListener listener) {
+    public void sendTextAtMsg(String roomId, String thirdUid, String text, List<String> atIdList, OnChatRequestListener listener) {
         try {
             String msgId = Util.genLocalMsgId();
-            boolean result = WeimiInstance.getInstance().sendTextExt(msgId, roomId, text, ConvType.room, atIdList, 120);
+            boolean result = WeimiInstance.getInstance().sendTextExt(msgId, roomId, text, thirdUid, ConvType.room, atIdList, 120);
             if(listener != null){
                 if(result)
                     listener.onSuccess(text);

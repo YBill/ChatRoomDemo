@@ -10,6 +10,8 @@ import com.ioyouyun.wchat.message.NotifyCenter;
 import com.ioyouyun.wchat.message.TextMessage;
 import com.ioyouyun.wchat.message.WeimiNotice;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by Bill on 2016/6/24.
  */
@@ -51,6 +53,13 @@ public class ReceiveMsgRunnable implements Runnable {
         TextMessage textMessage = (TextMessage) notice.getObject();
         Log.v("Bill", "text:" + textMessage.text);
         Log.v("Bill", "type:" + textMessage.convType);
+        String padding = null;
+        try {
+            padding = new String(textMessage.padding, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.v("Bill", "padding:" + padding);
         Message message = handler.obtainMessage();
         message.obj = textMessage.text;
         handler.sendMessage(message);

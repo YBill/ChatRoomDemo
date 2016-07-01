@@ -55,7 +55,7 @@ public class ChatPresenter {
             Log.v("Bill", "uid:" + uid);
             List list = new ArrayList();
             list.add(uid);
-            chatRequestBiz.sendTextAtMsg(roomId, text, list, new OnChatRequestListener() {
+            chatRequestBiz.sendTextAtMsg(roomId, roomId, text, list, new OnChatRequestListener() {
                 @Override
                 public void onSuccess(String response) {
                     sendMessage(response);
