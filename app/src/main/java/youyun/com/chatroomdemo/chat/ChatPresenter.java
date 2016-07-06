@@ -14,6 +14,7 @@ import com.ioyouyun.wchat.message.TextMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +54,13 @@ public class ChatPresenter {
         if(text.startsWith("@")){
             String uid = text.substring(text.indexOf("@")+1, text.length());
             Log.v("Bill", "uid:" + uid);
-            List list = new ArrayList();
-            list.add(uid);
-            chatRequestBiz.sendTextAtMsg(roomId, roomId, text, list, new OnChatRequestListener() {
+            byte[] padding = null;
+            try {
+                padding = uid.getBytes("utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            chatRequestBiz.sendTextAtMsg(roomId, roomId, text, padding, new OnChatRequestListener() {
                 @Override
                 public void onSuccess(String response) {
                     sendMessage(response);

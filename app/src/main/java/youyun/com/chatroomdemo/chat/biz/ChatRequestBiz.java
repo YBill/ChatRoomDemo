@@ -19,10 +19,10 @@ public interface ChatRequestBiz {
      * @消息
      * @param roomId
      * @param text
-     * @param atIdList
+     * @param padding
      * @param listener
      */
-    void sendTextAtMsg(String roomId, String thirdUid, String text, List<String> atIdList, OnChatRequestListener listener);
+    void sendTextAtMsg(String roomId, String thirdUid, String text, byte[] padding, OnChatRequestListener listener);
 
     /**
      * 创建聊天室

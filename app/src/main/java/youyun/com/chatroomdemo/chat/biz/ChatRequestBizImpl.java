@@ -34,10 +34,10 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
     }
 
     @Override
-    public void sendTextAtMsg(String roomId, String thirdUid, String text, List<String> atIdList, OnChatRequestListener listener) {
+    public void sendTextAtMsg(String roomId, String thirdUid, String text, byte[] padding, OnChatRequestListener listener) {
         try {
             String msgId = Util.genLocalMsgId();
-            boolean result = WeimiInstance.getInstance().sendTextExt(msgId, roomId, text, thirdUid, ConvType.room, atIdList, 120);
+            boolean result = WeimiInstance.getInstance().sendTextExt(msgId, roomId, text, thirdUid, ConvType.room, padding, 120);
             if(listener != null){
                 if(result)
                     listener.onSuccess(text);
@@ -53,7 +53,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
 
     @Override
     public void createChatRoom(String name, final OnChatRequestListener listener) {
-        WeimiInstance.getInstance().shortCreateRoom(name, "3", new HttpCallback() {
+        WeimiInstance.getInstance().shortCreateRoom(name, new HttpCallback() {
             @Override
             public void onResponse(String s) {
                 if(listener != null){
@@ -62,7 +62,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
             }
 
             @Override
-            public void onResponseHistory(List<HistoryMessage> list) {
+            public void onResponseHistory(List list) {
 
             }
 
@@ -87,7 +87,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
             }
 
             @Override
-            public void onResponseHistory(List<HistoryMessage> list) {
+            public void onResponseHistory(List list) {
 
             }
 
@@ -111,7 +111,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
             }
 
             @Override
-            public void onResponseHistory(List<HistoryMessage> list) {
+            public void onResponseHistory(List list) {
 
             }
 
@@ -135,7 +135,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
             }
 
             @Override
-            public void onResponseHistory(List<HistoryMessage> list) {
+            public void onResponseHistory(List list) {
 
             }
 
@@ -159,7 +159,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
             }
 
             @Override
-            public void onResponseHistory(List<HistoryMessage> list) {
+            public void onResponseHistory(List list) {
 
             }
 
@@ -183,7 +183,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
             }
 
             @Override
-            public void onResponseHistory(List<HistoryMessage> historyMessage) {
+            public void onResponseHistory(List historyMessage) {
 
             }
 
@@ -205,7 +205,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
             }
 
             @Override
-            public void onResponseHistory(List<HistoryMessage> historyMessage) {
+            public void onResponseHistory(List historyMessage) {
                 if(listener != null){
                     listener.onSuccess(historyMessage);
                 }
