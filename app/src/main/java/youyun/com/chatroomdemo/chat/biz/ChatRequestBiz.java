@@ -22,7 +22,7 @@ public interface ChatRequestBiz {
      * @param padding
      * @param listener
      */
-    void sendTextAtMsg(String roomId, String thirdUid, String text, byte[] padding, OnChatRequestListener listener);
+    void sendTextAtMsg(String roomId, String text, byte[] padding, OnChatRequestListener listener);
 
     /**
      * 创建聊天室
@@ -66,9 +66,10 @@ public interface ChatRequestBiz {
      * @param uids
      * @param status
      * @param roomId
+     * @param gagTime 禁言时间 单位：分钟
      * @param listener
      */
-    void getGagUsers(String uids, boolean status, String roomId, OnChatRequestListener listener);
+    void getGagUsers(String uids, boolean status, String roomId, long gagTime, OnChatRequestListener listener);
 
     /**
      * 历史记录

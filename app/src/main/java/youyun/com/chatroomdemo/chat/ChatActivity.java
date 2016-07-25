@@ -101,6 +101,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
                 break;
             case R.id.btn_clear_log:
                 logText.setText("");
+                isNext = false;
                 break;
             case R.id.btn_gag:
                 String roomId5 = inputEdit.getText().toString();
@@ -116,11 +117,21 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
                 break;
             case R.id.btn_history:
                 String uid = inputEdit.getText().toString();
-                if(!TextUtils.isEmpty(uid))
-                    presenter.getHistory(uid, System.currentTimeMillis()/1000, 10);
+                if(!TextUtils.isEmpty(uid)){
+                    long time;
+                    if(!isNext){
+                        isNext = true;
+                        time = System.currentTimeMillis();
+                    }else{
+                        time = historyTime;
+                    }
+                    presenter.getHistory(uid, time/1000, 10);
+                }
                 break;
         }
     }
+    boolean isNext = false;
+    long historyTime;
 
     @Override
     protected void onDestroy() {
@@ -131,5 +142,10 @@ public class ChatActivity extends AppCompatActivity implements ChatView, View.On
     @Override
     public void showText(String text) {
         logText.append(text + "\n");
+    }
+
+    @Override
+    public void setHistoryTime(long time) {
+        historyTime = time;
     }
 }

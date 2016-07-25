@@ -10,4 +10,6 @@ public interface ChatView {
      * @param text
      */
     void showText(String text);
+
+    void setHistoryTime(long time);
 }

@@ -1,5 +1,7 @@
 package youyun.com.chatroomdemo.chat.biz;
 
+import android.util.Log;
+
 import com.ioyouyun.wchat.WeimiInstance;
 import com.ioyouyun.wchat.message.ConvType;
 import com.ioyouyun.wchat.message.HistoryMessage;
@@ -34,10 +36,10 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
     }
 
     @Override
-    public void sendTextAtMsg(String roomId, String thirdUid, String text, byte[] padding, OnChatRequestListener listener) {
+    public void sendTextAtMsg(String roomId, String text, byte[] padding, OnChatRequestListener listener) {
         try {
             String msgId = Util.genLocalMsgId();
-            boolean result = WeimiInstance.getInstance().sendTextExt(msgId, roomId, text, thirdUid, ConvType.room, padding, 120);
+            boolean result = WeimiInstance.getInstance().sendTextExt(msgId, roomId, text, ConvType.room, padding, 120);
             if(listener != null){
                 if(result)
                     listener.onSuccess(text);
@@ -173,8 +175,8 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
     }
 
     @Override
-    public void getGagUsers(String uids, boolean status, String roomId, final OnChatRequestListener listener) {
-        WeimiInstance.getInstance().shortUsersGag(uids, status, roomId, new HttpCallback() {
+    public void getGagUsers(String uids, boolean status, String roomId, long gagTime, final OnChatRequestListener listener) {
+        WeimiInstance.getInstance().shortUsersGag(uids, status, roomId, gagTime, new HttpCallback() {
             @Override
             public void onResponse(String result) {
                 if(listener != null){
@@ -201,11 +203,14 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
         WeimiInstance.getInstance().shortGetHistoryByTime(toUid, timestamp, num, ConvType.room, new HttpCallback() {
             @Override
             public void onResponse(String result) {
-
+                Log.v("Bill", "getHistory onResponse");
             }
 
             @Override
             public void onResponseHistory(List historyMessage) {
+                Log.v("Bill", "getHistory onResponseHistory:" + historyMessage);
+                if(historyMessage != null)
+                    Log.v("Bill", "getHistory onResponseHistory size:" + historyMessage.size());
                 if(listener != null){
                     listener.onSuccess(historyMessage);
                 }
@@ -213,6 +218,7 @@ public class ChatRequestBizImpl implements ChatRequestBiz{
 
             @Override
             public void onError(Exception e) {
+                Log.v("Bill", "getHistory onError");
                 if(listener != null){
                     listener.onFaild();
                 }

@@ -60,7 +60,7 @@ public class ChatPresenter {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            chatRequestBiz.sendTextAtMsg(roomId, roomId, text, padding, new OnChatRequestListener() {
+            chatRequestBiz.sendTextAtMsg(roomId, text, padding, new OnChatRequestListener() {
                 @Override
                 public void onSuccess(String response) {
                     sendMessage(response);
@@ -238,7 +238,7 @@ public class ChatPresenter {
      * @param roomId
      */
     public void gagUsers(String uids, boolean status, String roomId){
-        chatRequestBiz.getGagUsers(uids, status, roomId, new OnChatRequestListener() {
+        chatRequestBiz.getGagUsers(uids, status, roomId, 1, new OnChatRequestListener() {
             @Override
             public void onSuccess(String response) {
                 sendMessage(response);
@@ -263,6 +263,7 @@ public class ChatPresenter {
      * @param num
      */
     public void getHistory(String toUid, long timestamp, int num){
+        Log.v("Bill", "timestamp:" + timestamp);
         chatRequestBiz.getHistory(toUid, timestamp, num, new OnChatRequestListener() {
             @Override
             public void onSuccess(String response) {
@@ -274,11 +275,21 @@ public class ChatPresenter {
                 if(list == null)
                     return;
                 for (int i = 0; i < list.size(); i++) {
+                    HistoryMessage historyMessage0 = null;
+                    if(i > 0){
+                        historyMessage0 = list.get(i - 1);
+                    }
                     HistoryMessage historyMessage = list.get(i);
                     if(NoticeType.textmessage == historyMessage.type){
                         if(historyMessage.message != null){
+                            TextMessage textMessage0 = null;
+                            if(historyMessage0 != null)
+                                textMessage0 = (TextMessage) historyMessage0.message;
                             TextMessage textMessage = (TextMessage) historyMessage.message;
-                            sendMessage("history:" + textMessage.text);
+                            long timec = (textMessage0 == null ? 0 : textMessage0.time) - textMessage.time;
+                            sendMessage("history:" + textMessage.text + " timie:" + textMessage.time + " |差值：" + timec);
+                            if(i == (list.size() - 1) && chatView != null)
+                                chatView.setHistoryTime(textMessage.time);
                         }
                     }
                 }
